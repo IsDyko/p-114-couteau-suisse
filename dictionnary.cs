@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class MorseDictionary
 {
-    public Dictionary<string, string> Morse = new Dictionary<string, string>()
+    public static Dictionary<string, string> Morse = new Dictionary<string, string>()
     {
         // Lettres
         {"A", ".-"},
@@ -46,6 +46,7 @@ public class MorseDictionary
         {"6", "-...."},
         {"7", "--..."},
         {"8", "---.."},
-        {"9", "----."}
+        {"9", "----."},
+        {" ", " / " }
     };
 }

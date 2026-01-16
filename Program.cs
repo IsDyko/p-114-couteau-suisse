@@ -2,16 +2,9 @@
 //Auteur: Diogo Martins
 //Programme Couteau Suisse
 
-// Variables globales
-string phraseToTranslate = string.Empty;
-MorseDictionary morseDict = new MorseDictionary();
+// Constantes
 
-Title();
-Menu();
-
-void Title()
-{
-    string textTitle = @"
+const string TEXT_TITLE = @"
   _____          __                  ____     _            
  / ___/__  __ __/ /____ ___ ___ __  / __/_ __(_)__ ___ ___ 
 / /__/ _ \/ // / __/ -_) _ `/ // / _\ \/ // / (_-<(_-</ -_)
@@ -19,43 +12,69 @@ void Title()
 
 ══════════════════════════════════════════════════════════
 ";
-    Console.WriteLine(textTitle);
-    Console.WriteLine("Bienvenue... \nCe programme actuellement ne fait que de la conversion");
+
+// Variables globales
+string phraseToTranslate = string.Empty;
+
+//Programme
+
+Title();
+Menu();
+
+//Fonctions
+void Title()
+{
+    Console.ForegroundColor = ConsoleColor.DarkYellow;
+    Console.WriteLine(TEXT_TITLE);
+    Console.ResetColor();
+    Console.WriteLine("Bienvenue... \nCe programme actuellement ne fait que de la conversion\n");
 }
 
 void Menu()
 {
-    Console.WriteLine("Sélectionner le mode de conversion");
-    Console.WriteLine("1. Phrase en Morse");
-    Console.WriteLine("2. Morse en Phrase");
+    while (true) 
+    { 
+        Console.WriteLine("Sélectionner le mode de conversion");
+        Console.WriteLine("1. Phrase en Morse");
+        Console.WriteLine("2. Morse en Phrase");
 
-    ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-    string pressedKey = keyInfo.KeyChar.ToString().ToUpper();
+        ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+        string pressedKey = keyInfo.KeyChar.ToString().ToUpper();
 
-    if (!int.TryParse(pressedKey, out int menuChoice))
-    {
-        Console.WriteLine("Entrée invalide. Appuyer sur 1 ou 2");
-    }
-
-    switch (int.Parse(pressedKey))
-    {
-        case 1:
-            Console.WriteLine("Ecrivez dés à présent votre phrase en dessous:");
-            phraseToTranslate = Console.ReadLine().ToUpper();
-            Translation(phraseToTranslate);
-            break;
-        case 2:
-            Console.WriteLine("Ecrivez dés à présent votre phrase en Morse:");
-            string morseToTranslate = Console.ReadLine().ToUpper();
-            break;
-        default:
+        if (!int.TryParse(pressedKey, out int menuChoice))
+        {
             Console.Clear();
-            Console.WriteLine("Choix innexistant");
+            Console.WriteLine("Entrée invalide. Appuyer sur 1 ou 2");
             Thread.Sleep(1000);
             Console.Clear();
             Title();
-            Menu();
-            break;
+            continue;
+        }
+
+        switch (menuChoice)
+        {
+            case 1:
+                Console.WriteLine("Ecrivez dés à présent votre phrase en dessous:");
+                phraseToTranslate = Console.ReadLine().ToUpper();
+                Translation(phraseToTranslate);
+                break;
+            case 2:
+                Console.WriteLine("Ecrivez dés à présent votre phrase en Morse:");
+                string morseToTranslate = Console.ReadLine().ToUpper();
+                break;
+            default:
+                Console.Clear();
+                Console.WriteLine("Choix innexistant");
+                Thread.Sleep(1000);
+                Console.Clear();
+                Title();
+                Menu();
+                break;
+        }
+        Console.WriteLine("\nAppuyer sur n'importe quelle touche pour recommencer");
+        Console.ReadKey();
+        Console.Clear();
+        Title();
     }
 }
 
@@ -66,13 +85,9 @@ void Translation(string word)
     foreach (char letter in letters)
     {
         string key = letter.ToString();
-        if (morseDict.Morse.ContainsKey(key))
+        if (MorseDictionary.Morse.ContainsKey(key))
         {
-            Console.Write(morseDict.Morse[key] + "  ");
-        }
-        else if (key == " ")
-        {
-            Console.Write("/ "); // séparation des mots
+            Console.Write(MorseDictionary.Morse[key] + "  ");
         }
     }
 }
