@@ -1,6 +1,6 @@
 ﻿//Ecole: ETML
 //Auteur: Diogo Martins
-//Programme Couteau Suisse
+//Programme: Couteau Suisse
 
 // Constantes
 
@@ -12,6 +12,8 @@ const string TEXT_TITLE = @"
 
 ══════════════════════════════════════════════════════════
 ";
+string[] OPTIONS = { "1. Phrase en Morse", "2. Conversions", "0. Quitter" };
+string[] CONVERT_OPTIONS = { "1. Décimal > Binaire", "2. Binaire > Décimal", "3. Binaire > Octal", "4. Octal > Binire" };
 
 // Variables globales
 string phraseToTranslate = string.Empty;
@@ -35,8 +37,10 @@ void Menu()
     while (true) 
     { 
         Console.WriteLine("Sélectionner le mode de conversion");
-        Console.WriteLine("1. Phrase en Morse");
-        Console.WriteLine("2. Morse en Phrase");
+        for (int i = 0; i < OPTIONS.Length; i++)
+        {
+            Console.WriteLine(OPTIONS[i]);
+        }
 
         ConsoleKeyInfo keyInfo = Console.ReadKey(true);
         string pressedKey = keyInfo.KeyChar.ToString().ToUpper();
@@ -59,8 +63,23 @@ void Menu()
                 Translation(phraseToTranslate);
                 break;
             case 2:
-                Console.WriteLine("Ecrivez dés à présent votre phrase en Morse:");
-                string morseToTranslate = Console.ReadLine().ToUpper();
+                Console.Clear();
+                for (int i = 0; i < CONVERT_OPTIONS.Length; i++)
+                {
+                    Console.WriteLine(CONVERT_OPTIONS[i]);
+                }
+                keyInfo = Console.ReadKey(true);
+                switch (keyInfo.Key)
+                {
+                    case ConsoleKey.NumPad1 or ConsoleKey.D1:
+                        Console.WriteLine("Insérez votre numéro: ");
+                        ConvertTo(Convert.ToInt32(Console.ReadLine()), keyInfo.Key);
+                        break;
+                    case ConsoleKey.NumPad2 or ConsoleKey.D2:
+                        Console.WriteLine("Insérez votre numéro: ");
+                        ConvertTo(Convert.ToInt32(Console.ReadLine()), keyInfo.Key);
+                        break;
+                }
                 break;
             case 0:
                 Environment.Exit(0);
@@ -105,6 +124,40 @@ void Translation(string word)
                 Thread.Sleep(100);
             }
             Thread.Sleep(300);
+        }     
+    }
+}
+
+void ConvertTo(int number, ConsoleKey key)
+{
+    if (key == ConsoleKey.D1 || key == ConsoleKey.NumPad1)
+    {
+        List<int> binaryNumber = new();
+
+        while (number > 0)
+        {
+            binaryNumber.Add(number % 2);
+            number /= 2;
         }
+
+        binaryNumber.Reverse();
+
+        Console.WriteLine(string.Join("", binaryNumber));
+    }
+
+    else if (key == ConsoleKey.D2 || key == ConsoleKey.NumPad2)
+    {
+        int decimalResult = 0;
+        int power = 1;
+
+        while (number > 0)
+        {
+            int lastDigit = number % 10;
+            decimalResult += lastDigit * power;
+            power *= 2;
+            number /= 10;
+        }
+
+        Console.WriteLine(decimalResult);
     }
 }
