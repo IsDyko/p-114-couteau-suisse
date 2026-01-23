@@ -24,10 +24,10 @@ Menu();
 //Fonctions
 void Title()
 {
-    Console.ForegroundColor = ConsoleColor.DarkYellow;
+    Console.ForegroundColor = ConsoleColor.Red;
     Console.WriteLine(TEXT_TITLE);
     Console.ResetColor();
-    Console.WriteLine("Bienvenue... \nCe programme actuellement ne fait que de la conversion\n");
+    Console.WriteLine("Bienvenue...\nCe programme actuellement ne fait que de la conversion\n");
 }
 
 void Menu()
@@ -62,6 +62,9 @@ void Menu()
                 Console.WriteLine("Ecrivez dés à présent votre phrase en Morse:");
                 string morseToTranslate = Console.ReadLine().ToUpper();
                 break;
+            case 0:
+                Environment.Exit(0);
+                break;
             default:
                 Console.Clear();
                 Console.WriteLine("Choix innexistant");
@@ -88,6 +91,20 @@ void Translation(string word)
         if (MorseDictionary.Morse.ContainsKey(key))
         {
             Console.Write(MorseDictionary.Morse[key] + "  ");
+
+            foreach (char symbol in MorseDictionary.Morse[key])
+            {
+                if (symbol == '.')
+                {
+                    Console.Beep(800, 150);
+                }
+                else if (symbol == '-')
+                {
+                    Console.Beep(800, 400);
+                }
+                Thread.Sleep(100);
+            }
+            Thread.Sleep(300);
         }
     }
 }
